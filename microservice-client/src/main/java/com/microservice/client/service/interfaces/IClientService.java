@@ -2,17 +2,19 @@ package com.microservice.client.service.interfaces;
 
 import java.util.List;
 
-import com.microservice.client.persistence.entity.ClientEntity;
+import com.microservice.client.web.dto.ClientDTO;
+import com.microservice.client.web.dto.CreateClientDTO;
+import com.microservice.client.web.dto.UpdateClientDTO;
 import com.microservice.client.web.http.response.AccountsByClientResponse;
 
 public interface IClientService {
-    List<ClientEntity> findAll();
+    List<ClientDTO> findAll();
     
-    ClientEntity findById(String clientId);
+    ClientDTO findById(String clientId);
 
-    ClientEntity create(ClientEntity client);
+    ClientDTO create(CreateClientDTO clientDTO);
 
-    ClientEntity update(String clientId, ClientEntity client);
+    ClientDTO update(String clientId, UpdateClientDTO clientDTO);
 
     void delete(String clientId);
 

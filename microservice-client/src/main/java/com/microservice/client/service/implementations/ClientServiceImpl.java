@@ -2,6 +2,9 @@ package com.microservice.client.service.implementations;
 
 import java.util.List;
 
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +12,14 @@ import com.microservice.client.network.AccountClient;
 import com.microservice.client.persistence.entity.ClientEntity;
 import com.microservice.client.persistence.repository.ClientRepository;
 import com.microservice.client.service.interfaces.IClientService;
+import com.microservice.client.utils.ManageProperties;
 import com.microservice.client.web.dto.AccountDTO;
+import com.microservice.client.web.dto.ClientDTO;
+import com.microservice.client.web.dto.CreateClientDTO;
+import com.microservice.client.web.dto.UpdateClientDTO;
 import com.microservice.client.web.http.response.AccountsByClientResponse;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ClientServiceImpl implements IClientService {
@@ -19,33 +28,46 @@ public class ClientServiceImpl implements IClientService {
     private ClientRepository clientRepository;
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     private AccountClient accountClient;
 
     @Override
-    public List<ClientEntity> findAll() {
-        return clientRepository.findAll();
+    public List<ClientDTO> findAll() {
+        List<ClientEntity> clients = this.clientRepository.findAll();
+        return clients.stream().map(client -> this.modelMapper.map(client, ClientDTO.class)).collect(Collectors.toList());
     }
 
     @Override
-    public ClientEntity findById(String clientId) {
-        return clientRepository.findById(clientId).orElseThrow();
+    public ClientDTO findById(String clientId) {
+        ClientEntity client = this.clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        return this.modelMapper.map(client, ClientDTO.class);
     }
 
     @Override
-    public ClientEntity create(ClientEntity client) {
-        return clientRepository.save(client);
+    public ClientDTO create(CreateClientDTO clientDTO) {
+
+        ClientEntity clientEntity = this.modelMapper.map(clientDTO, ClientEntity.class);
+        clientEntity.setStatus(true);
+        this.clientRepository.save(clientEntity);
+        clientDTO.setPassword(null);
+        return this.modelMapper.map(clientEntity, ClientDTO.class);
     }
 
     @Override
-    public ClientEntity update(String clientId, ClientEntity client) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public ClientDTO update(String clientId, UpdateClientDTO clientDTO) {
+        ClientEntity clientEntity = this.clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        clientEntity = ManageProperties.addProperties(clientDTO, clientEntity);
+        ClientEntity updatedClient = this.clientRepository.save(clientEntity);
+        return this.modelMapper.map(updatedClient, ClientDTO.class);
     }
 
     @Override
     public void delete(String clientId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        ClientEntity client = this.clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        client.setStatus(false);
+        this.clientRepository.save(client);
     }
 
     @Override

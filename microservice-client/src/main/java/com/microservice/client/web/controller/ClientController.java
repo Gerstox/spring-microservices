@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.microservice.client.persistence.entity.ClientEntity;
 import com.microservice.client.service.interfaces.IClientService;
+import com.microservice.client.web.dto.ClientDTO;
+import com.microservice.client.web.dto.CreateClientDTO;
+import com.microservice.client.web.dto.UpdateClientDTO;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -25,30 +29,31 @@ public class ClientController {
     private IClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<ClientEntity>> findAll() {
+    public ResponseEntity<List<ClientDTO>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(this.clientService.findAll());
     }
     @GetMapping("/{clientId}")
-    public ResponseEntity<ClientEntity> findById(@PathVariable("clientId") String clientId) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.clientService.findById(clientId));
+    public ResponseEntity<ClientDTO> findById(@PathVariable("clientId") String clientId) {
+        ClientDTO client = this.clientService.findById(clientId);
+        return ResponseEntity.status(HttpStatus.OK).body(client);
     }
 
     @PostMapping
-    public ResponseEntity<ClientEntity> create(@RequestBody ClientEntity client) {
+    public ResponseEntity<ClientDTO> create(@Valid @RequestBody CreateClientDTO client) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.clientService.create(client));
     }
     
     @PutMapping("/{clientId}")
-    public ResponseEntity<ClientEntity> update(
+    public ResponseEntity<ClientDTO> update(
         @PathVariable("clientId") String clientId,
-        @RequestBody ClientEntity clientData) {
-            return ResponseEntity.status(HttpStatus.OK).body(this.clientService.update(clientId, clientData));
+        @RequestBody UpdateClientDTO clientDTO) {
+            return ResponseEntity.status(HttpStatus.OK).body(this.clientService.update(clientId, clientDTO));
     }
 
     @DeleteMapping("/{clientId}")
     public ResponseEntity<Void> delete(@PathVariable("clientId") String clientId) {
         this.clientService.delete(clientId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/cuentas/{clientId}")

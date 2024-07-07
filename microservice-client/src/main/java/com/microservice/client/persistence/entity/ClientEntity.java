@@ -31,6 +31,9 @@ public class ClientEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(nullable = false, unique = true)
+    private String identification;
+
     @Column(nullable = false)
     private String name;
 
@@ -38,12 +41,17 @@ public class ClientEntity {
     GenderEnum gender;
 
     private Integer age;
+
+    @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
     private String phone;
     // End Person Class Properties
 
     @Column(nullable = false)
     private String password;
 
+    @Column(columnDefinition = "boolean default true")
     private Boolean status;
 }
