@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.microservice.management.persistence.entity.AccountEntity;
 import com.microservice.management.service.interfaces.IAccountService;
+import com.microservice.management.web.dto.AccountDTO;
+import com.microservice.management.web.dto.CreateAccountDTO;
+import com.microservice.management.web.dto.UpdateAccountDTO;
 
 import jakarta.validation.Valid;
 
@@ -33,50 +35,34 @@ public class AccountController {
     private IAccountService accountService;
 
     @GetMapping
-    public ResponseEntity<List<AccountEntity>> findAll() {
-        List<AccountEntity> accounts = accountService.findAll();
-        if (accounts.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(accounts);
+    public ResponseEntity<List<AccountDTO>> findAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.accountService.findAll());
     }
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<AccountEntity> findById(@PathVariable("accountId") String accountId) {
-        AccountEntity account = accountService.findById(accountId);
-        if (account == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(account);
+    public ResponseEntity<AccountDTO> findById(@PathVariable("accountId") String accountId) {
+        AccountDTO account = this.accountService.findById(accountId);
+        return ResponseEntity.status(HttpStatus.OK).body(account);
     }
 
     @PostMapping
-    public ResponseEntity<AccountEntity> create(@Valid @RequestBody AccountEntity account) {
-        AccountEntity newAccount = accountService.create(account);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newAccount);
+    public ResponseEntity<AccountDTO> create(@Valid @RequestBody CreateAccountDTO accountDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.accountService.create(accountDTO));
     }
 
     @PutMapping("/{accountId}")
-    public ResponseEntity<AccountEntity> update(
+    public ResponseEntity<AccountDTO> update(
         @PathVariable("accountId") String accountId,
-        @RequestBody AccountEntity account) {
+        @RequestBody UpdateAccountDTO accountDTO) {
 
-        account.setId(accountId);
-        AccountEntity accountDB = accountService.update(account);
-        if (accountDB == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(accountDB);
+        return ResponseEntity.status(HttpStatus.OK).body(this.accountService.update(accountId, accountDTO));
     }
 
     @DeleteMapping("/{accountId}")
-    public ResponseEntity<AccountEntity> delete(@PathVariable("accountId") String accountId) {
+    public ResponseEntity<Void> delete(@PathVariable("accountId") String accountId) {
 
-        AccountEntity accountDeleted = accountService.delete(accountId);
-        if (accountDeleted == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(accountDeleted); 
+        this.accountService.delete(accountId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/buscar-por-cliente/{clientId}")

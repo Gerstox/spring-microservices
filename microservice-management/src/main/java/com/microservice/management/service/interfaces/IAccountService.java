@@ -2,13 +2,15 @@ package com.microservice.management.service.interfaces;
 
 import java.util.List;
 
-import com.microservice.management.persistence.entity.AccountEntity;
+import com.microservice.management.web.dto.AccountDTO;
+import com.microservice.management.web.dto.CreateAccountDTO;
+import com.microservice.management.web.dto.UpdateAccountDTO;
 
 public interface IAccountService {
-    public List<AccountEntity> findAll();
-    public AccountEntity findById(String accountId);
-    public List<AccountEntity> findByClientId(String clientId);
-    public AccountEntity create(AccountEntity account);
-    public AccountEntity update(AccountEntity account);
-    public AccountEntity delete(String accountId);
+    public List<AccountDTO> findAll();
+    public AccountDTO findById(String accountId);
+    public List<AccountDTO> findByClientId(String clientId);
+    public AccountDTO create(CreateAccountDTO account);
+    public AccountDTO update(String accountId, UpdateAccountDTO account);
+    public void delete(String accountId);
 }
