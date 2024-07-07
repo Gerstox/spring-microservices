@@ -1,7 +1,5 @@
 package com.microservice.management.web.dto.movement;
 
-import com.microservice.management.persistence.entity.AccountEntity;
-
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,5 +17,5 @@ public class MovementDTO {
 
     private Double balance;
 
-    private AccountEntity account;
+    private String account;
 }

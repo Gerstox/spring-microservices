@@ -37,7 +37,7 @@ public class MovementServiceImpl implements IMovementService {
     public List<MovementDTO> findAll() {
 
         List<MovementEntity> movements = movementRepository.findAll();
-        return movements.stream().map(account -> this.modelMapper.map(account, MovementDTO.class)).collect(Collectors.toList());
+        return movements.stream().map(movement -> this.modelMapper.map(movement, MovementDTO.class)).collect(Collectors.toList());
     }
 
     @Override
