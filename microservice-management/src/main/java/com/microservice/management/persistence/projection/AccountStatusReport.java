@@ -1,7 +1,5 @@
 package com.microservice.management.persistence.projection;
 
-import java.util.Date;
-
 public interface AccountStatusReport {
     String getClientName();
     String getAccountNumber();
@@ -10,5 +8,5 @@ public interface AccountStatusReport {
     String getAvailableBalance();
     Boolean getAccountStatus();
     Double getMovement();
-    Date getDate();
+    String getDate();
 }
