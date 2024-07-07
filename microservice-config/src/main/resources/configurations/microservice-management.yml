@@ -1,0 +1,23 @@
+server:
+  port: ${MANAGEMENT_PORT}
+
+spring:
+  application:
+    name: microservice-management
+  datasource: 
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MANAGEMENT_MYSQL_CLUSTER}:${MANAGEMENT_MYSQL_PORT}/${MANAGEMENT_MYSQL_DATABASE}?createDatabaseIfNotExist=true
+    username: ${MANAGEMENT_MYSQL_USER}
+    password: ${MANAGEMENT_MYSQL_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+eureka:
+  instance:
+    hostname: ${EUREKA_HOST}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT}

@@ -1,0 +1,4 @@
+INSERT IGNORE INTO accounts (id, account_number, account_type, initial_balance, status, client_id) VALUES ('410fb7ef-3bf8-11ef-af54-00e04c0602f2', '478758', 'Ahorros', 2000, 1, '9be03a03-3bec-11ef-af54-00e04c0602f2');
+INSERT IGNORE INTO accounts (id, account_number, account_type, initial_balance, status, client_id) VALUES ('41107ac8-3bf8-11ef-af54-00e04c0602f2', '225487', 'Corriente', 100, 1, '9be0eac5-3bec-11ef-af54-00e04c0602f2');
+INSERT IGNORE INTO accounts (id, account_number, account_type, initial_balance, status, client_id) VALUES ('41114a77-3bf8-11ef-af54-00e04c0602f2', '495878', 'Ahorros', 0, 1, '9be1e590-3bec-11ef-af54-00e04c0602f2');
+INSERT IGNORE INTO accounts (id, account_number, account_type, initial_balance, status, client_id) VALUES ('411206a6-3bf8-11ef-af54-00e04c0602f2', '496825', 'Ahorros', 540, 1, '9be0eac5-3bec-11ef-af54-00e04c0602f2');
