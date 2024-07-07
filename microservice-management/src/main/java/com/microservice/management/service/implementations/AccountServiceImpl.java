@@ -12,9 +12,9 @@ import com.microservice.management.persistence.entity.AccountEntity;
 import com.microservice.management.persistence.repository.AccountRepository;
 import com.microservice.management.service.interfaces.IAccountService;
 import com.microservice.management.utils.ManageProperties;
-import com.microservice.management.web.dto.AccountDTO;
-import com.microservice.management.web.dto.CreateAccountDTO;
-import com.microservice.management.web.dto.UpdateAccountDTO;
+import com.microservice.management.web.dto.account.AccountDTO;
+import com.microservice.management.web.dto.account.CreateAccountDTO;
+import com.microservice.management.web.dto.account.UpdateAccountDTO;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -63,7 +63,7 @@ public class AccountServiceImpl implements IAccountService {
     public AccountDTO update(String accountId, UpdateAccountDTO accountDTO) {
 
         AccountEntity accountEntity = this.accountRepository.findById(accountId).orElseThrow(() -> new EntityNotFoundException("Client not found"));
-        accountEntity = ManageProperties.addProperties(accountDTO, accountEntity);
+        accountEntity = ManageProperties.addAccountProperties(accountDTO, accountEntity);
         AccountEntity updatedAccount = this.accountRepository.save(accountEntity);
         return this.modelMapper.map(updatedAccount, AccountDTO.class);
     }

@@ -1,4 +1,4 @@
-package com.microservice.management.web.dto;
+package com.microservice.management.web.dto.account;
 
 import com.microservice.management.persistence.enumeration.AccountTypeEnum;
 

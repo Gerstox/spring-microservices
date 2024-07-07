@@ -2,11 +2,13 @@ package com.microservice.management.service.interfaces;
 
 import java.util.List;
 
-import com.microservice.management.persistence.entity.MovementEntity;
+import com.microservice.management.web.dto.movement.CreateMovementDTO;
+import com.microservice.management.web.dto.movement.MovementDTO;
+import com.microservice.management.web.dto.movement.UpdateMovementDTO;
 
 public interface IMovementService {
-    public List<MovementEntity> findAll();
-    public MovementEntity findById(int movementeId);
-    public MovementEntity create(MovementEntity movement);
-    public MovementEntity update(MovementEntity movement);
+    public List<MovementDTO> findAll();
+    public MovementDTO findById(int movementeId);
+    public MovementDTO create(CreateMovementDTO movementDTO);
+    public MovementDTO update(int movementId, UpdateMovementDTO movementDTO);
 }
