@@ -16,5 +16,8 @@ public class CreateAccountDTO {
 
     @NotNull(message = "initialBalance is required")
     private Double initialBalance;
+
+    @NotNull(message = "clientId is required")
+    private String clientId;
     
 }

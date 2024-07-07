@@ -17,5 +17,5 @@ public class AccountDTO {
 
     private Boolean status;
 
-    // private String clientId;
+    private String clientId;
 }

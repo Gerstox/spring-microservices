@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.microservice.management.network.ClientClient;
 import com.microservice.management.persistence.entity.AccountEntity;
 import com.microservice.management.persistence.repository.AccountRepository;
 import com.microservice.management.service.interfaces.IAccountService;
@@ -25,6 +26,9 @@ public class AccountServiceImpl implements IAccountService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private ClientClient clientClient;
 
     @Override
     public List<AccountDTO> findAll() {
@@ -48,6 +52,7 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public AccountDTO create(CreateAccountDTO accountDTO) {
 
+        this.clientClient.findById(accountDTO.getClientId());
         AccountEntity accountEntity = this.modelMapper.map(accountDTO, AccountEntity.class);
         accountEntity.setStatus(true);
         this.accountRepository.save(accountEntity);

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -40,6 +41,12 @@ public class RestExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiError> handleEntityNotFoundExceptions(EntityNotFoundException ex) {
         ApiError error = new ApiError(404, "Not found" , new Date());
+        return new ResponseEntity<ApiError>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ApiError> handleFeignException(FeignException e) {
+        ApiError error = new ApiError(404, "Feign Exception, Resource Not found" , new Date());
         return new ResponseEntity<ApiError>(error, HttpStatus.NOT_FOUND);
     }
 
