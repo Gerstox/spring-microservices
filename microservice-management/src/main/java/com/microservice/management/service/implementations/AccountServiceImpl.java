@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.microservice.management.network.ClientClient;
 import com.microservice.management.persistence.entity.AccountEntity;
 import com.microservice.management.persistence.repository.AccountRepository;
+import com.microservice.management.service.exceptions.InsufficientFundsException;
 import com.microservice.management.service.interfaces.IAccountService;
 import com.microservice.management.utils.ManageProperties;
 import com.microservice.management.web.dto.account.AccountDTO;
@@ -74,5 +75,20 @@ public class AccountServiceImpl implements IAccountService {
         AccountEntity account = this.accountRepository.findById(accountId).orElseThrow(() -> new EntityNotFoundException("Account not found"));
         account.setStatus(false);
         this.accountRepository.save(account);
+    }
+
+    @Override
+    public Double updateBalance(String accountId, Double value) {
+        AccountEntity account = this.accountRepository.findById(accountId).orElseThrow(() -> new EntityNotFoundException("Account not found"));
+        Double finalAmount = account.getInitialBalance() + value;
+
+        if ( finalAmount < 0) {
+            throw new InsufficientFundsException();
+        }
+
+        account.setInitialBalance(finalAmount);
+        this.accountRepository.save(account);
+
+        return finalAmount;
     }
 }

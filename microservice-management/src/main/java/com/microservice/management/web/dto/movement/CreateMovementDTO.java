@@ -12,10 +12,7 @@ public class CreateMovementDTO {
     @NotNull(message = "value is required")
     private Double value;
 
-    @NotNull(message = "balance is required")
-    private Double balance;
-
     @NotNull(message = "accountId is required")
-    private String account;
+    private String accountId;
     
 }

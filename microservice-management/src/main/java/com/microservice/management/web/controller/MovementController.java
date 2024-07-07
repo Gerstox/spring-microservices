@@ -41,8 +41,9 @@ public class MovementController {
 
     @PostMapping
     public ResponseEntity<MovementDTO> create(@Valid @RequestBody CreateMovementDTO movementDTO) {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.movementService.create(movementDTO));
+        
+        this.movementService.create(movementDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{movementId}")

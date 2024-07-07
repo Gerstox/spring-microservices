@@ -13,4 +13,5 @@ public interface IAccountService {
     public AccountDTO create(CreateAccountDTO account);
     public AccountDTO update(String accountId, UpdateAccountDTO account);
     public void delete(String accountId);
+    public Double updateBalance(String accountId, Double value);
 }

@@ -2,15 +2,19 @@ package com.microservice.management.service.implementations;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.microservice.management.persistence.entity.AccountEntity;
 import com.microservice.management.persistence.entity.MovementEntity;
 import com.microservice.management.persistence.repository.MovementRepository;
+import com.microservice.management.service.interfaces.IAccountService;
 import com.microservice.management.service.interfaces.IMovementService;
 import com.microservice.management.utils.ManageProperties;
+import com.microservice.management.web.dto.account.AccountDTO;
 import com.microservice.management.web.dto.movement.CreateMovementDTO;
 import com.microservice.management.web.dto.movement.MovementDTO;
 import com.microservice.management.web.dto.movement.UpdateMovementDTO;
@@ -22,6 +26,9 @@ public class MovementServiceImpl implements IMovementService {
 
     @Autowired
     private MovementRepository movementRepository;
+
+    @Autowired
+    private IAccountService accountService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -40,12 +47,24 @@ public class MovementServiceImpl implements IMovementService {
     }
 
     @Override
-    public MovementDTO create(CreateMovementDTO movementDTO) {
+    public void create(CreateMovementDTO movementDTO) {
 
-        MovementEntity movementEntity = this.modelMapper.map(movementDTO, MovementEntity.class);
-        // movementEntity.setStatus(true);
-        this.movementRepository.save(movementEntity);
-        return this.modelMapper.map(movementEntity, MovementDTO.class);
+        AccountDTO accountDTO = this.accountService.findById(movementDTO.getAccountId());
+        Double finalAmount = accountService.updateBalance(accountDTO.getId(), movementDTO.getValue());
+        
+        LocalDateTime today = LocalDateTime.now();
+        AccountEntity account = this.modelMapper.map(accountDTO, AccountEntity.class);
+
+
+        MovementEntity movementEntity = MovementEntity.builder()
+            .date(today)
+            .movementType(movementDTO.getMovementType())
+            .value(movementDTO.getValue())
+            .balance(finalAmount)
+            .account(account)
+            .build();
+
+        movementRepository.save(movementEntity);
     }
 
     @Override

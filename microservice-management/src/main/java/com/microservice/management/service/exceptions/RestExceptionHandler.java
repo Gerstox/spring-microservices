@@ -45,9 +45,15 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<ApiError> handleFeignException(FeignException e) {
+    public ResponseEntity<ApiError> handleFeignException(FeignException ex) {
         ApiError error = new ApiError(404, "Feign Exception, Resource Not found" , new Date());
         return new ResponseEntity<ApiError>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<ApiError> handleInsufficientFundsException(InsufficientFundsException ex) {
+        ApiError error = new ApiError(409, ex.getMessage(), new Date());
+        return new ResponseEntity<ApiError>(error, HttpStatus.CONFLICT);
     }
 
     
