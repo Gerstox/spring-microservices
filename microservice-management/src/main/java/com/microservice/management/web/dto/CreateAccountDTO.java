@@ -3,7 +3,9 @@ package com.microservice.management.web.dto;
 import com.microservice.management.persistence.enumeration.AccountTypeEnum;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
+@Data
 public class CreateAccountDTO {
 
     @NotNull(message = "accountNumber is required")
