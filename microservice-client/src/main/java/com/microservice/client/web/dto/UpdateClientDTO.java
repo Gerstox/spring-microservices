@@ -3,8 +3,10 @@ package com.microservice.client.web.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.microservice.client.persistence.enumeration.GenderEnum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateClientDTO {
     
