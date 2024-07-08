@@ -1,0 +1,82 @@
+version: "3"
+services:
+
+  microservice-config:
+    build: ./microservice-config
+    ports:
+      - "8888:8888"
+    networks:
+      - network-eureka
+      - network-client
+      - network-management
+      - network-gateway
+
+  microservice-eureka:
+    build: ./microservice-eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - network-config
+      - network-client
+      - network-management
+      - network-gateway
+    depends_on:
+      - microservice-config
+
+  microservice-client:
+    build: ./microservice-client
+    ports:
+      - "8090:8090"
+    networks:
+      - network-mysql
+      - network-config
+      - network-eureka
+      - network-management
+      - network-gateway
+    depends_on:
+      - mysqldb
+      - microservice-config
+      - microservice-eureka
+
+  microservice-management:
+    build: ./microservice-management
+    ports:
+      - "9090:9090"
+    networks:
+      - network-mysql
+      - network-mysql
+      - network-config
+      - network-eureka
+      - network-client
+      - network-gateway
+    depends_on:
+      - mysqldb
+      - microservice-config
+      - microservice-eureka
+ 
+  microservice-gateway:
+    build: ./microservice-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - network-client
+      - network-management
+    depends_on:
+      - microservice-client
+      - microservice-management
+
+  mysqldb:
+    image: mysql:8
+    networks:
+      - service-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=client_db
+
+networks:
+  network-mysql:
+  network-config:
+  network-eureka:
+  network-client:
+  network-management:
+  network-gateway:
