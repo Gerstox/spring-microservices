@@ -18,6 +18,18 @@ public class DataProvider {
         return clientEntity;
     }
 
+    public static ClientEntity getNewClient() {
+        ClientEntity newClientEntity = new ClientEntity();
+        newClientEntity.setId("f72d3fab-7c90-45b9-8072-add1bfaf7911");
+        newClientEntity.setIdentification("0010");
+        newClientEntity.setName("Jose Tua");
+        newClientEntity.setAddress("Address");
+        newClientEntity.setPhone("0123456");
+        newClientEntity.setPassword("9874");
+        newClientEntity.setStatus(true);
+        return newClientEntity;
+    }
+
     public static ClientEntity getClientUpdated() {
 
         ClientEntity updateClient = new ClientEntity();
@@ -30,7 +42,20 @@ public class DataProvider {
         return updateClient;
     }
 
+
     public static ClientDTO getClientDTO() {
+
+        ClientDTO clientDTO = new ClientDTO();
+        clientDTO.setId("9be03a03-3bec-11ef-af54-00e04c0602f2");
+        clientDTO.setIdentification("0001");
+        clientDTO.setName("Jose Lema");
+        clientDTO.setAddress("Otavalo sn y principal");
+        clientDTO.setPhone("098254785");
+        clientDTO.setPassword("1234");
+        return clientDTO;
+    }
+
+    public static ClientDTO getE2EClientDTO() {
 
         ClientDTO clientDTO = new ClientDTO();
         clientDTO.setId("9be03a03-3bec-11ef-af54-00e04c0602f2");

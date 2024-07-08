@@ -3,6 +3,7 @@ package com.microservice.client.service.implementations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.microservice.client.DataProvider;
 import com.microservice.client.persistence.entity.ClientEntity;
 import com.microservice.client.persistence.repository.ClientRepository;
-import com.microservice.client.utils.ManageProperties;
 import com.microservice.client.web.dto.ClientDTO;
 import com.microservice.client.web.dto.CreateClientDTO;
 
@@ -32,9 +32,6 @@ public class ClientServiceImplTest {
 
     @Mock
     private ModelMapper modelMapper;
-
-    @Mock
-    private ManageProperties manageProperties;
     
     @InjectMocks
     private ClientServiceImpl clientService;
@@ -60,6 +57,7 @@ public class ClientServiceImplTest {
         when(clientRepository.findAll()).thenReturn(List.of(clientEntity));
 
         assertNotNull(clientService.findAll());
+        verify(clientRepository).findAll();
     }
 
     @Test
@@ -68,15 +66,15 @@ public class ClientServiceImplTest {
 
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(clientEntity));
         when(modelMapper.map(clientEntity, ClientDTO.class)).thenReturn(clientDTO);
-        Optional<ClientEntity> response = clientRepository.findById(clientId);
+        ClientDTO response = clientService.findById(clientId);
 
         assertNotNull(clientService.findById(clientId));
-        assertEquals("9be03a03-3bec-11ef-af54-00e04c0602f2", response.get().getId());
-        assertEquals("0001", response.get().getIdentification());
-        assertEquals("Jose Lema", response.get().getName());
-        assertEquals("Otavalo sn y principal", response.get().getAddress());
-        assertEquals("098254785", response.get().getPhone());
-        assertEquals("1234", response.get().getPassword());
+        assertEquals("9be03a03-3bec-11ef-af54-00e04c0602f2", response.getId());
+        assertEquals("0001", response.getIdentification());
+        assertEquals("Jose Lema", response.getName());
+        assertEquals("Otavalo sn y principal", response.getAddress());
+        assertEquals("098254785", response.getPhone());
+        assertEquals("1234", response.getPassword());
     }
 
     @Test
@@ -87,8 +85,9 @@ public class ClientServiceImplTest {
         when(modelMapper.map(clientEntity, ClientDTO.class)).thenReturn(clientDTO);
         ClientDTO response = clientService.create(createClientDTO);
 
-        assertNotNull(clientService.create(createClientDTO));
+        assertNotNull(response);
         assertNotNull(response.getId());
+        verify(clientRepository).save(any(ClientEntity.class));
     }
 
 }
